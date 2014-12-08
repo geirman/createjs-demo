@@ -35,17 +35,22 @@
     			stage = new create.Stage('myCanvas');
 
     			var ball = new create.Shape();
+    			ball.addEventListener("click", ballClick);
     			ball.graphics.beginFill('#F80').drawCircle(0,0,50);
     			ball.x = 50;
     			ball.y = 50;
 
-    			create.Tween.get(ball, {loop: true}).to({x:450}, 3000, create.Ease.bounceOut).to({x:50}, 3000, create.Ease.bounceOut);
+    			create.Tween.get(ball, {loop: true}).to({x:450}, 4000, create.Ease.bounceOut).to({x:50}, 4000, create.Ease.bounceOut);
     			create.Ticker.addEventListener('tick', tick);
 
 
 
     			stage.addChild(ball);
     			stage.update();
+    		}
+
+    		function ballClick(){
+    			console.log('ball clicked');
     		}
 
     		function tick() {
