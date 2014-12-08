@@ -34,6 +34,18 @@
     		function init() {
     			stage = new create.Stage('myCanvas');
 
+                var soundManifest = [
+                    {src: "assets/cuckoo.wav", id:"wav"},
+                    {src: "assets/cuckoo.mp3", id:"mp3"}];
+                create.Sound.alternativeExtensions = ["wav"];
+                create.Sound.addEventListener("fileload", soundLoaded);
+                create.Sound.registerManifest(soundManifest);
+
+            }
+
+            function soundLoaded(event){
+
+                console.log(event);
     			var ball = new create.Shape();
     			ball.addEventListener("click", ballClick);
     			ball.graphics.beginFill('#F80').drawCircle(0,0,50);
@@ -43,13 +55,14 @@
     			create.Tween.get(ball, {loop: true}).to({x:450}, 4000, create.Ease.bounceOut).to({x:50}, 4000, create.Ease.bounceOut);
     			create.Ticker.addEventListener('tick', tick);
 
-
-
     			stage.addChild(ball);
-    			stage.update();
-    		}
+            }
 
-    		function ballClick(){
+            function allSoundsLoaded(event){
+                console.log('all sounds loaded');
+            }
+
+    		function ballClick(event){
     			console.log('ball clicked');
     		}
 
