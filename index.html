@@ -30,25 +30,28 @@
     	(function(create){
 
     		var stage;
+            var queue;
 
     		function init() {
-    			stage = new create.Stage('myCanvas');
+                stage = new create.Stage('myCanvas');
+                
+                var assetManifest = [
+                    {src: "assets/cuckoo.mp3", id:"mp3"},
+                    {src: "assets/happy1.png", id:"happy1"}];
 
-                var soundManifest = [
-                    {src: "assets/cuckoo.wav", id:"wav"},
-                    {src: "assets/cuckoo.mp3", id:"mp3"}];
-                create.Sound.alternativeExtensions = ["wav"];
-                create.Sound.addEventListener("fileload", soundLoaded);
-                create.Sound.registerManifest(soundManifest);
+                queue = new create.LoadQueue(false);
+                queue.installPlugin(create.Sound);
+                queue.addEventListener('complete', allSoundsLoaded);
+                queue.loadManifest(assetManifest);
 
             }
 
-            function soundLoaded(event){
 
-                console.log(event);
+            function allSoundsLoaded(event){
+                console.log('all assets loaded');
     			var ball = new create.Shape();
     			ball.addEventListener("click", ballClick);
-    			ball.graphics.beginFill('#F80').drawCircle(0,0,50);
+    			ball.graphics.beginFill('#D50').drawCircle(0,0,50);
     			ball.x = 50;
     			ball.y = 50;
 
@@ -58,12 +61,12 @@
     			stage.addChild(ball);
             }
 
-            function allSoundsLoaded(event){
-                console.log('all sounds loaded');
-            }
-
     		function ballClick(event){
-    			console.log('ball clicked');
+                var img = new create.Bitmap(queue.getResult("happy1"));
+                img.x = Math.random()*500;
+                img.y = Math.random()*500;
+                stage.addChild(img);
+    			create.Sound.play('mp3');
     		}
 
     		function tick() {
