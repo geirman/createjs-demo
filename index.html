@@ -22,7 +22,7 @@
       <script src="//oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
     <![endif]-->
   </head>
-  <body class="container">
+  <body class="container" onload="init()">
     
 
 
@@ -30,7 +30,7 @@
     <canvas id="myCanvas" width="500" height="275">
     	If you see this, Canvas is not supported by your browser
     </canvas>
-    <button class="btn btn-primary" onclick="wait()">Pause</button>
+    <!-- <button class="btn btn-primary" onclick="wait()">Pause</button> -->
 
 
 
@@ -65,7 +65,6 @@
 
             }
 
-
             function allSoundsLoaded(event){
                 console.log('all assets loaded');
     			ball = new create.Shape();
@@ -82,7 +81,6 @@
 
     		function ballClick(event){
                 var imgIdx = Math.floor(Math.random() * 6 + 1);
-                console.log(imgIdx);
                 var img = new create.Bitmap(queue.getResult("happy" + imgIdx));
                 img.x = offset;
                 img.y = 110;
@@ -95,7 +93,7 @@
     			stage.update();
     		}
 
-    		init();
+    		window.init = init;
 
     	})(createjs);
     </script>
