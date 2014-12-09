@@ -8,7 +8,13 @@
 
     <!-- Bootstrap -->
     <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css" rel="stylesheet">
-
+    <style>
+    canvas {
+        display: block;
+        margin-bottom: 5px;
+        border: 1px solid #CCC;
+    }
+    </style>
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
@@ -17,10 +23,17 @@
     <![endif]-->
   </head>
   <body class="container">
+    
+
+
     <h1>CreateJS</h1>
-    <canvas id="myCanvas" width="500" height="500">
+    <canvas id="myCanvas" width="500" height="275">
     	If you see this, Canvas is not supported by your browser
     </canvas>
+    <button class="btn btn-primary" onclick="wait()">Pause</button>
+
+
+
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
     <!-- Include all compiled plugins (below), or include individual files as needed -->
@@ -31,13 +44,19 @@
 
     		var stage;
             var queue;
+            var offset = 0;
 
     		function init() {
                 stage = new create.Stage('myCanvas');
                 
                 var assetManifest = [
                     {src: "assets/cuckoo.mp3", id:"mp3"},
-                    {src: "assets/happy1.png", id:"happy1"}];
+                    {src: "assets/happy1-sm.png", id:"happy1"},
+                    {src: "assets/happy2-sm.png", id:"happy2"},
+                    {src: "assets/happy3-sm.png", id:"happy3"},
+                    {src: "assets/happy4-sm.png", id:"happy4"},
+                    {src: "assets/happy5-sm.png", id:"happy5"},
+                    {src: "assets/happy6-sm.png", id:"happy6"}];
 
                 queue = new create.LoadQueue(false);
                 queue.installPlugin(create.Sound);
@@ -49,7 +68,7 @@
 
             function allSoundsLoaded(event){
                 console.log('all assets loaded');
-    			var ball = new create.Shape();
+    			ball = new create.Shape();
     			ball.addEventListener("click", ballClick);
     			ball.graphics.beginFill('#D50').drawCircle(0,0,50);
     			ball.x = 50;
@@ -62,9 +81,12 @@
             }
 
     		function ballClick(event){
-                var img = new create.Bitmap(queue.getResult("happy1"));
-                img.x = Math.random()*500;
-                img.y = Math.random()*500;
+                var imgIdx = Math.floor(Math.random() * 6 + 1);
+                console.log(imgIdx);
+                var img = new create.Bitmap(queue.getResult("happy" + imgIdx));
+                img.x = offset;
+                img.y = 110;
+                offset = (offset <= 300 ? offset+50 : 0);
                 stage.addChild(img);
     			create.Sound.play('mp3');
     		}
